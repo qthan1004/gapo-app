@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+    <!-- IMPORT BOOSTRAP -->
+    <link href="/your-path-to-fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="d-flex">
+            <div class="col-lg-4 col-md-8 login-form border-secondary loginpage-left" style="background-color: white;">
+                <div class="d-flex justify-content-start flex-column">
+                    <div>
+                        <img class="logo" src="../../assets/images/logo gapo.svg">
+                    </div>
+                    <div class="login-intro">
+                        <span>Xin chào Gapoer!</span>
+                    </div>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label>Email đăng nhập</label>
+                        <input type="text" class="form-control" id="email" placeholder=" Vui lòng nhập email">
+                        <label>Mật khẩu</label>
+                        <input type="text" class="form-control" id="password" placeholder="Vui lòng nhập mật khẩu">
+                    </div>
+                    <div class="btn-group-vertical col-12 button">
+                        <button type="button" class="btn btn-primary btn-lg login-btn" id="login-btn"
+                            name="login-btn">Đăng
+                            nhập</button>
+                        <button type="button" class="btn btn-primary btn-lg active singup-btn" id="singup-btn">Đăng
+                            ký</button>
+                    </div>
+                </form>
+                <div class="login-intro d-flex justify-content-between">
+                    <a href="#">Chính sách & Điều khoản</a>
+                    <a href="#">Câu hỏi thường gặp</a>
+                    <a href="#">Trợ giúp</a>
+                </div>
+                <div class="ihfPQr mt-5">
+                    <img src="../../assets/images/buildwithlove.png" alt="logo-bottom">
+                </div>
+
+            </div>
+            <div class="col-lg-8 col-md-4 loginpage-right">
+            </div>
+        </div>
+
+        <!-- IMPORT BOOSTRAP + JQUERY -->
+        <script src="../../libs/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../../libs/jquery/jquery-3.5.1.js"></script>
+        <!-- YOUR CODE -->
+        <script src="./index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,314 @@
+body {
+    background-color: #e2e2e2;
+}
+.navbar-brand{
+    padding-right: 20px;
+    border-right: solid 0.5px rgb(162, 162, 162);
+}
+a {
+    color: inherit;
+}
+
+.item-r a:hover {
+    text-decoration: none;
+    list-style-type: none;
+}
+
+a:hover {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.img-content img {
+    width: 100%;
+}
+
+.bg-7c {
+    background-color:#fff;
+}
+
+.menu-top {
+    background-color: #fff;
+    box-shadow: inset 0 -1px 0 #ececec;
+}
+
+.bg-3a {
+    background-color: rgb(36 37 38 / 1);
+}
+.search-btn{
+    padding-right: 10px;
+    padding-left: 5px;
+    font-size:1.5rem;
+    color: rgb(186, 186, 186);
+    cursor: pointer;
+   
+}
+.search-btn:hover{
+   color: blue;
+}
+
+.input-search {
+    border-radius: 50px;
+    padding-left: 20px;
+    border:none;
+    outline: none;
+    height: 85%;
+  
+}
+
+.input-search:focus {
+    background-color: #eee;
+    border-color: inherit;
+    outline: 0;
+    box-shadow: unset;
+    color: rgb(102, 102, 102);
+}
+
+.list-top-menu {
+    margin: 0px;
+    padding:0
+}
+.icon-name{
+    margin-bottom: 5px;
+    color: black;
+}
+.item-top-menu {
+    display: inline-block;
+    width: 80px;
+    padding:auto;
+}
+
+.item-top-menu-right {
+    display: inline-block;
+}
+
+.item-top-menu.active i {
+    color: inherit;
+}
+
+.item-top-menu.active {
+    border-bottom: 3px solid #6fbe49;
+    color: #6fbe49;
+}
+.icon-name:hover{
+    color: #6fbe49;
+}
+.item-top-menu i {
+    font-size: 24px;
+}
+
+.item-r i {
+    font-size: 20px;
+    padding-right: 10px;
+    color: black;
+}
+
+.item-top-menu-right i {
+    font-size: 16px;
+}
+
+.list-tr-menu {
+    margin: 0;
+}
+
+.item-top-menu-right i {
+    background-color: #e7e7e7;
+    border-radius:50% ;
+    padding: 10px;
+}
+
+
+.slider-b-rigt {
+    list-style-type: none;
+    width: 100%;
+    padding: 0;
+}
+
+
+.item-r-users i {
+    color: #007bff;
+    border-radius:50% ;
+    margin-right: 5px;
+}
+
+.item-r {
+    padding:15px
+}
+.item-r a{
+    color: black;
+}
+.item-r:hover {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+.author {
+    padding: 10px;
+}
+
+.content-main {
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: rgb(247, 247, 247);
+}
+
+.btn-item .btn-reaction {
+    padding: 5px 25px;
+
+}
+
+.btn-item .btn-reaction:hover {
+    background-color: #f2f2f2;
+    border-radius: 5px;
+}
+
+.btn-top-ac {
+    border-top: 1px solid #7c7c7c;
+    border-bottom: 1px solid #7c7c7c;
+    padding: 10px 0;
+}
+
+.reaction img {
+    width: 100%;
+}
+
+.reaction {
+    display: flex;
+    width: 50%;
+}
+
+.reaction-detail {
+    display: flex;
+    align-items: center;
+}
+
+.reaction-comment {
+    padding: 10px;
+}
+
+
+.menu-right,
+.menu-left {
+    position: sticky;
+    top: 10px;
+}
+
+.menu-left {
+    padding: 0;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.status img {
+    width: 100%;
+}
+
+.status-main {
+    background-color:rgb(247, 247, 247);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.status,
+.status-inp {
+    padding: 5px ;
+}
+
+.icon-status {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.list-st {
+    padding: 0;
+    margin: 0;
+}
+
+.body-main {
+    margin: 0 3rem;
+}
+
+.body-main-content {
+    height: 100vh !important;
+    max-width: 100% !important;
+}
+
+.svg-icon {
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100% auto;
+}
+
+.comment-item {
+    background-color: rgb(226, 226, 226);
+    padding: .5rem .625rem;
+    border-radius: 1rem;
+}
+
+.item-top-menu-right .nav-link {
+    padding: 0;
+}
+
+.list-item .item-img img {
+    width: 20%;
+    margin-top:20px;
+    margin-bottom:20px
+}
+
+
+.add-frend {
+    background-color: #6fbe44;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.add-frend:hover {
+    background-color: #5ea339;
+    color: #fff;
+    text-decoration: none
+}
+
+.nav-top-menu {
+    padding-bottom: 0;
+}
+
+.item-add {
+    background-color: #ecf7e7 ;
+    padding: 7px;
+    margin:0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.item-add a{
+    color: #6fbe44
+}
+.item-add:hover{
+    background-color:  #e2e4e1;
+}
+.btn-comment {
+    width: 85%;
+}
+
+.reaction-icon {
+    cursor: pointer;
+}
+.post-btn:hover{
+    background-color: #6fbe49;
+    font-weight: 550;
+    color:white
+}
+.aut-name{
+    font-weight: 550;
+    font-size: 20px;
+    padding-left: 10px;
+}
+.comment-author{
+    font-size: 17px;
+    color: blue;    
+}
