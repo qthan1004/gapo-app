@@ -1,43 +1,64 @@
-const Posts = require('../models/posts.model')
+const Post = require('../models/posts.model')
 
-module.exports.getPosts = (req, res) => {
-    Posts.find({}, (err, result) => {
-        return res.json({ posts: result })
-    })
+module.exports.getPosts = async (req, res) => {
+    const posts = await Post.find();
+    res.json({ isSuccess: true, posts })
 }
 
 module.exports.postPost = (req, res) => {
-    const { ...postInfo } = req.body
-    const post = new Posts(postInfo)
-    post.save((err, result) => {
-        if (err) throw err
-        else {
-            return res.json({ status: 200 })
-        }
-    })
-}
+    const { author, content } = req.body
 
-module.exports.postComment = (req, res) => {
-    Posts.findById(req.params.id, function (err, doc) {
+    if (!author || !content) {
+        return res.json({
+            isSuccess: false,
+            message: 'Thiếu thông tin được yêu cầu',
+        });
+    }
+
+    const newPost = new Post({
+        ...req.body,
+        reaction: {
+            like: 0,
+            smile: 0,
+            angry: 0,
+            love: 0,
+            suprise: 0
+        },
+        groupID: '',
+        comments: []
+    })
+
+    newPost.save(function (err, doc) {
         if (err) {
             return res.json({
                 isSuccess: false,
-                message: 'Error in post comment with id',
+                message: 'Database error',
             })
-        }
-        doc.comment.push({ author: req.body.author, content: req.body.content })
-        doc.save((err, doc) => {
-            if (err) {
-                return res.json({
-                    isSuccess: false,
-                    message: 'Error database',
-                })
-            }
+        } else {
             return res.json({
                 isSuccess: true,
-                message: 'complete',
-                data: doc
+                message: 'Bài viết đã được tạo',
+                newPost: doc,
             })
-        })
+        }
+    });
+}
+
+module.exports.updatePost = (req, res) => {
+    if (!req.params.id) {
+        return res.json({
+            isSuccess: false, message: 'Thiếu thông tin yêu cầu'
+        });
+    }
+    console.log('req.body', req.body)
+
+    Post.findByIdAndUpdate(req.params.id, req.body, function (err, doc) {
+        if (err) {
+            return res.json({
+                isSuccess: false,
+                message: 'Error in updating person with id',
+            })
+        }
+        return res.json({ isSuccess: true, updatedPost: req.body });
     })
 }

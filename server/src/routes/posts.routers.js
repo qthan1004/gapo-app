@@ -4,5 +4,5 @@ const postsController = require('../controllers/posts.controllers')
 
 router.get('/', postsController.getPosts)
 router.post('/', postsController.postPost)
-router.put('/:id', postsController.postComment)
+router.put('/:id', postsController.updatePost)
 module.exports = router
