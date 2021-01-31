@@ -1,275 +1,432 @@
 $(document).ready(() => {
-    getAllPost()
+    //STATE
+    let allPosts = null
+    let currentusername = null
+    const id = localStorage.getItem("id")
 
-    getUserInfo()
-
-    getEmoji((data) => {
-        let allEmoji = ''
-
-        data.forEach(emoji => {
-            allEmoji += `<div id="${emoji.character}" class="emoji d-inline rounded-circle">${emoji.character.split(' ')[0]}</div>`
-        })
-
-        $('.emoji-board').html(allEmoji)
-
-        $('.emoji').click((e) => getEmojiByID(e.currentTarget))
-    })
-
-    $('#get-file').change(() => {
-        const files = $('#get-file').prop('files')
-
-        if (files && files[0]) {
-            let reader = new FileReader()
-
-            reader.onload = (e) => {
-                $('#show-file').html(`
-                    <img src="${e.target.result}" class="w-100 border rounded-custom">
-                `)
-
-            }
-
-            reader.readAsDataURL(files[0])
-        }
-    })
-
-    $('#post-btn').click(() => {
-        const content = $('.post-content').val()
-        const email = localStorage.getItem('email')
-        const date = (`${new Date()}`).split(' ')
-        const time = date[2] + '-' + date[1] + '-' + date[3]
-
+    //GET USERINFOR
+    function getUserInfor() {
         $.ajax({
-            url: 'http://localhost:3000/posts',
-            type: 'POST',
-            data: JSON.stringify({
-                author: email,
-                content,
-                time,
-                reaction: {
-                    like: 0,
-                    haha: 0,
-                    cry: 0,
-                    love: 0
-                }
-            }),
-            contentType: 'application/json'
-        }).done(data => {
-            $('.container-fluid').prepend(`
-                <div class="alert alert-success w-75 position-absolute">Đăng bài viết thành công.</div>
-            `)
-
-            setTimeout(() => {
-                location.reload()
-            }, 500)
-        })
-
-    })
-
-    function getUser(handler) {
-        $.ajax({
-            url: 'http://localhost:3000/users',
+            url: "http://localhost:3000/users",
             type: 'GET',
             contentType: 'application/json'
+
         }).done((data) => {
-            // console.log(data)
-            data.data.forEach(user => {
-                handler(user)
-            })
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">Database error</div>`)
+            } else {
+                data.data.forEach(user => {
+                    if (id === user._id) {
+                        currentusername = user.firstname + " " + user.lastname
+                        $('#navbardrop').html(` <img src="../../assets/images/default-user-avatar.png" alt=""
+                        style="width:15%; border-radius: 50%;margin-right: 5px;"> ${user.firstname} ${user.lastname}`)
+                    } else {
+                        $('#list-user').html(`<li class="item-r">
+                    <a href="#"><i class="fa fa-user-circle" aria-hidden="true"></i><span
+                            class="md-2">${user.firstname} ${user.lastname}</span></a>
+                    </li>`)
+                    }
+                })
+            }
         })
     }
+    getUserInfor()
 
-    function getAllPost() {
+    //GET ALL GROUP
+    function getAllGroup() {
         $.ajax({
-            url: 'http://localhost:3000/posts',
+            url: "http://localhost:3000/groups",
+            type: 'GET',
+            contentType: 'application/json'
+
+        }).done((data) => {
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">Database error</div>`)
+            } else {
+                data.data.forEach(group => {
+                    $('.group').append(
+                        `<li class="item-r">
+                        <img src="../../assets/images/group.png" alt=""
+                            style="width:10%; border-radius: 50%;margin-right: 5px;"> ${group.name}
+                    </li>`
+                    )
+                })
+            }
+        })
+    }
+    getAllGroup()
+    //GET ALLPOST
+    function getPosts() {
+        $.ajax({
+            url: "http://localhost:3000/posts",
             type: 'GET',
             contentType: 'application/json'
         }).done(data => {
-            // console.log(data)
-            data.posts.forEach(post => {
-                console.log(data)
-                getUser((user) => {
-                    if (post.author == user.email) {
-                        const postComponent = `
-                            <div class="mb-3 p-3 bg-white shadow border rounded-custom">
-                                <div class="row mb-3 m-0 p-0 flex-nowrap align-items-center">
-                                    <div class="icon-size">
-                                        <img class="d-inline-block rounded-circle icon-md-size" src="../../assets/images/iconuser.jpg" alt="">
-                                    </div>
-                                    <div class="col-10 d-inline-block p-0 post-info">
-                                        <p class="m-0"><span class="c-pointer name post-name">${user.firstname} ${user.lastname}</span></p>
-                                        <p class="mb-0 post-date"><span class="text-secondary">${post.time}</span></p>
-                                    </div>
-                                </div>
-                                <p>${post.content}</p>
-                                <div class="my-3 border"></div>
-                                <div class="row flex-nowrap px-2 fw-bold text-secondary">
-                                    <label class="col py-2 c-pointer menu-unselect rounded-custom reaction" for="${post._id}-lk">
-                                        <i class="fas fa-thumbs-up pe-1"></i>Like
-                                    </label>
-                                    <input type="radio" class="d-none" id="${post._id}-lk" name="${post._id}">
-                                    <label class="col py-2 c-pointer menu-unselect rounded-custom reaction" for="${post._id}-ha">
-                                        <i class="fas fa-grin-squint pe-1"></i>Haha
-                                    </label>
-                                    <input type="radio" class="d-none" id="${post._id}-ha" name="${post._id}">
-                                    <label class="col py-2 c-pointer menu-unselect rounded-custom reaction" for="${post._id}-cr">
-                                        <i class="fas fa-sad-tear pe-1"></i>Cry
-                                    </label>
-                                    <input type="radio" class="d-none" id="${post._id}-cr" name="${post._id}">
-                                    <label class="col py-2 c-pointer menu-unselect rounded-custom reaction" for="${post._id}-lv">
-                                        <i class="fas fa-heart pe-1"></i>Love
-                                    </label>
-                                    <input type="radio" class="d-none" id="${post._id}-lv" name="${post._id}">
-                                </div>
-                                <div id="show-cmt"></div>
-                                <div class="d-flex comment-inp">
-                                    <input type="text" class="col-11 pe-5 form-control rounded-pill post-content post-comment">
-                                    <i class="fas fa-plane post-cmt-bnt" ></i>
-                                </div>
-                                </div>
-                            </div>`
-                        $.ajax({
-                            url: 'http://localhost:3000/users',
-                            type: 'GET',
-                            contentType: 'application/json'
-                        }).done((data) => {
-                            console.log(data.data)
-                            post.comment.forEach((postinfo) => {
-                                for (let i = 0; i < data.data.length; i++) {
-                                    if (postinfo.author === data.data[i]._id) {
-                                        const comt = `     
-                                            <div class="p-0 border border-light col-10">
-                                                <p class="col-6 m-0 post-cmt-name"><span class="c-pointer ">${data.data[i].firstname} ${data.data[i].lastname}</span></p>
-                                                <p class="mb-0 post-date cmt-content"><span class="fs-4">${postinfo.content}</span></p>
-                                            </div>
-                                        `
-                                        $('#show-cmt').append(comt)
-                                    }
-                                }
-                            })
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">Database error</div>`)
+            } else {
+                allPosts = data.posts
+                data.posts.forEach(post => {
+                    $('#content').prepend(`
+                <div class="content-main bg-7c mb-3 " key="${post._id}">
+                    <div class="author">
+                        <div class="author-main pb-2">
+                            <a href="#"><img src="../../assets/images/default-user-avatar.png"
+                                    alt="" style="width:8%; border-radius: 50%"></a>
+                            <a href="#">
+                                <span class='aut-name'>${post.author}</span>
+                            </a>
+                        </div>
+                        <div class="author-status">
+                            <span>${post.content}</span>
+                        </div>
+                    </div>  
 
-                        })
-                        $('.main-content').append(postComponent)
-                        $('input[name="' + post._id + '"]').click(() => {
-                            const checked = $('input[name="' + post._id + '"]:checked')
-                            const unChecks = $('input[name="' + post._id + '"]:not(:checked)')
-                            reaction(checked, unChecks)
-                        })
+                    <div class="reaction-comment d-flex justify-content-between">
+                        <div class="reaction">
 
-                        $('.post-cmt-bnt').click(() => {
-                            const author = localStorage.getItem("id")
-                            const idPost = post._id
-                            const content = $('.post-comment').val()
-                            console.log(author, idPost, content)
-                            $.ajax({
-                                url: `http://localhost:3000/posts/${idPost}`,
-                                type: 'PUT',
-                                data: JSON.stringify({
-                                    author,
-                                    idPost,
-                                    content
-                                }),
-                                contentType: 'application/json'
-                            }).done()
+                            <div class="mr-4 reaction-detail">
+                                <img class="mr-1 reaction-icon" id="likeIcon"
+                                    src="../../assets/images/like.png" alt="icon">
+                                ${post.reaction.like}
+                            </div>
+                            <div class="mr-4 reaction-detail">
+                                <img class="mr-1 reaction-icon" id="smileIcon"
+                                    src="../../assets/images/smile.png" alt="icon">
+                                    ${post.reaction.smile}
+                            </div>
+                            <div class="mr-4 reaction-detail">
+                                <img class="mr-1 reaction-icon" id="loveIcon"
+                                    src="../../assets/images/heart.png" alt="icon">
+                                    ${post.reaction.love}
+                            </div>
+                            <div class="mr-4 reaction-detail">
+                                <img class="mr-1 reaction-icon" id="angryIcon"
+                                    src="../../assets/images/angry.png" alt="icon">
+                                    ${post.reaction.angry}
+                            </div>
+                            <div class="mr-4 reaction-detail">
+                                <img class="mr-1 reaction-icon" id="surpriseIcon"
+                                    src="../../assets/images/suprise.png" alt="icon">
+                                    ${post.reaction.suprise}
+                            </div>
+                        </div>
+                        <div class="comment d-flex">
+                            <a class=" mr-2" href="#">${post.comment.length} bình luận</a>
+                            <a class=" mr-2" href="#">86 lượt chia sẻ</a>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-around btn-top-ac">
+                        <div class="btn-item"> <button data-toggle="collapse" data-target="#comment"
+                                class="btn btn-reaction postcomment" id=""> <i
+                                    class="far fa-thumbs-up"></i> Thích</button>
+                        </div>
+                        <div class="btn-item"> <button data-toggle="collapse" data-target="#comment"
+                                class="btn btn-reaction postcomment" id=""> <i
+                                    class="far fa-comments"></i> bình
+                                luận</button></div>
+                        <div class="btn-item"> <button data-toggle="collapse" data-target="#share"
+                                class="btn btn-reaction"> <i class="far fa-share-square"></i> chia
+                                sẻ</button></div>
+                    </div>
+                    <div class="post-comment-main">
+                        <div class="comment-main mt-3 mb-3"> 
+                        </div>                        
+                        <div class=" row d-flex align-items-center post-comment-item">
+                            <div class="col-1">
+                                <img src="../../assets/images/default-user-avatar.png"
+                                    alt="author-commet" class="rounded-circle" style="width:35px;">
+                            </div>
+                            <div class="col-9 post-main">
+                                <input type="text" class="form-control gPgfXu comment-post">
+                            </div>
+                            <div class="col-2 p-0">
+                                <button class="btn btn-success btn-comment" id="post-cmt"><i
+                                        class="far fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    `)
+                    //RENDER COMMENT
+                    if (post.comment.length > 0) {
+                        post.comment.map(cmt => {
+                            let cmtcomponant = `<div class="comment-item mb-3">
+                                <div class="comment-author">
+                                    <img src="../../assets/images/default-user-avatar.png"
+                                 style="width:35px;border-radius: 50%; margin-right: 5px;">${cmt.author}
+                              </div>
+                             <p class="m-0" style="padding-left: 35px; padding-top:10px">${cmt.content}</p>
+                        </div>`
+                            $(`div[key = "${post._id}"]`).children('.post-comment-main').children('.comment-main').append(cmtcomponant)
                         })
                     }
                 })
-
-            })
-
-        })
-    }
-
-    function getUserInfo() {
-        getUser((user) => {
-            const email = localStorage.getItem('email')
-            // console.log(user.email)
-            if (user.email === email) {
-                $('#info-user').html(`
-                        <img class="mx-1 d-inline-block rounded-circle icon-md-size" src="../../assets/images/iconuser.jpg" alt="">
-                        ${user.firstname} ${user.lastname}
-                    `)
-
-                $('#post-avatar').attr('src', "../../assets/images/iconuser.jpg")
-
-                $('#post-content').attr('placeholder', `${user.lastname} ơi, cảm nghĩ của bạn là gi?`)
-            } else {
-                $('#friend').after(`
-                        <div class="d-flex align-items-center flex-nowrap p-2 rounded-custom menu-unselect">
-                            <img class="me-3 icon-size rounded-circle" src="../../assets/images/iconuser.jpg" alt="">
-                            <p class="m-0 name">${user.firstname} ${user.lastname}</p>
-                        </div>
-                    `)
             }
         })
+
     }
+    getPosts()
 
+    //ADD COMMENT
+    $('.content').on("click", ".content-main .post-comment-main .post-comment-item .btn-comment", (event) => {
+        event.preventDefault();
+        let postId = $(event.currentTarget).parents('.content-main').attr('key')
+        const content = $(event.currentTarget).parent().parent().children('.post-main').children('.comment-post').val()
 
-
-    function reaction(checked, unChecks) {
-        let i = 0
-        while (i < unChecks.length) {
-            checkReaction(unChecks[i])
-            i++
-        }
-
-        if (checkReaction(checked)) {
+        //CHECK EMPTY COMMENT
+        if (!content) {
+            $('.alert').remove()
+            $('.container-fluid').prepend('<div class="alert alert-warning" role="alert">Vui lòng nhập bình luận của bạn</div>')
             return
         }
 
-        if (checked.attr('id').includes('lk')) {
-            const checkedID = checked.attr('id')
-            $(`label[for="${checkedID}"]`).addClass('text-primary')
+        const postInfor = allPosts.find(post => post._id === postId)
+        if (!postInfor) {
+            $('.alert').remove()
+            $('.container-fluid').prepend('<div class="alert alert-warning" role="alert">Bài đăng chưa có</div>')
+            return
         }
-
-        if (checked.attr('id').includes('ha')) {
-            const checkedID = checked.attr('id')
-            $(`label[for="${checkedID}"]`).addClass('text-warning')
-        }
-
-        if (checked.attr('id').includes('cr')) {
-            const checkedID = checked.attr('id')
-            $(`label[for="${checkedID}"]`).addClass('text-success')
-        }
-
-        if (checked.attr('id').includes('lv')) {
-            const checkedID = checked.attr('id')
-            $(`label[for="${checkedID}"]`).addClass('text-danger')
-        }
-    }
-
-    function checkReaction(element) {
-        const unCheckID = $(element).attr('id')
-
-        if ($(`label[for="${unCheckID}"]`).attr('class').includes('text-')) {
-            let unCheckClass = $(`label[for="${unCheckID}"]`).attr('class').split(' ')
-
-            let j = 0
-            while (j < unCheckClass.length) {
-                if (unCheckClass[j].includes('text-')) {
-                    unCheckClass.splice(j, 1)
-                    $(`label[for="${unCheckID}"]`).attr('class', unCheckClass.join(' '))
-                    return true
-                }
-                j++
-            }
-        }
-
-        return false
-    }
-
-    function getEmojiByID(element) {
-        const character = $(element).attr('id')
-        $('.post-content').val(`${$('.post-content').val()}${character}`)
-    }
-
-    function getEmoji(callBack) {
-        $.getJSON('https://emoji-api.com/emojis?access_key=8dc971798f1b3ca9293d7d68e2357d749a8b2a63', (data) => {
-            callBack(data)
+        postInfor.comment.push({
+            postID: postId,
+            author: currentusername,
+            content
         })
-    }
+        $.ajax({
+            url: `http://localhost:3000/posts/${postId}`,
+            data: JSON.stringify({ ...postInfor }),
+            type: 'PUT',
+            contentType: 'application/json'
+        }).done(data => {
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">Bình luận chưa được đăng thành công</div>`)
+            } else {
+                window.location.replace('http://127.0.0.1:5500/gapo%20app/client/componants/Homepage/index.html')
+            }
+        })
 
+    })
+
+    //ADD POST
+    $("#postModal").click(() => { $(`#sel1`).val(currentusername) })
+    $("#create-group").click(() => { $(`#sell`).val(currentusername) })
+    $('.btn-post').click(() => {
+
+        let author = $(`#sel1`).val()
+        let content = $(`#content-post`).val()
+        if (!content) {
+            $('.alert').remove()
+            $('.modal-body').prepend('<div class="alert alert-warning" role="alert">Bạn chưa viết cảm nghĩ kìa</div>')
+            return
+        }
+        $.ajax({
+            url: `http://localhost:3000/posts/`,
+            data: JSON.stringify({
+                author,
+                content
+            }),
+            type: 'POST',
+            contentType: 'application/json'
+        }).done(data => {
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $('.container-fluid').prepend(`<div class="alert alert-warning" role="alert">${data.message}</div>`)
+                return
+            }
+            else {
+                window.location.replace('http://127.0.0.1:5500/gapo%20app/client/componants/Homepage/index.html')
+            }
+        })
+    })
+
+    //REACTION
+    // LIKE
+    $(".content").on("click", ".content-main .reaction-comment .reaction .reaction-detail #likeIcon", function (event) {
+        event.preventDefault();
+        let postId = $(event.currentTarget).parents('.content-main').attr('key')
+        const postInfo = allPosts.find(post => post._id === postId)
+
+        if (!postInfo) {
+            $('.alert').remove()
+            $('.container-fluid').prepend('<div class="alert alert-warning" role="alert">Post Invalid</div>')
+            return
+        }
+        postInfo.reaction.like += 1
+
+        $.ajax({
+            url: `http://localhost:3000/posts/${postId}`,
+            data: JSON.stringify({
+                ...postInfo
+            }),
+            type: 'PUT',
+            contentType: 'application/json'
+        }).done(function (data) {
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">${data.message}</div>`)
+            } else {
+                location.reload()
+            }
+        })
+    })
+
+    // SMILE
+    $(".content").on("click", ".content-main .reaction-comment .reaction .reaction-detail #smileIcon", function (event) {
+        event.preventDefault();
+        let postId = $(event.currentTarget).parents('.content-main').attr('key')
+        const postInfo = allPosts.find(post => post._id === postId)
+
+        if (!postInfo) {
+            $('.alert').remove()
+            $('.container-fluid').prepend('<div class="alert alert-warning" role="alert">Post Invalid</div>')
+            return
+        }
+        postInfo.reaction.smile += 1
+
+        $.ajax({
+            url: `http://localhost:3000/posts/${postId}`,
+            data: JSON.stringify({
+                ...postInfo
+            }),
+            type: 'PUT',
+            contentType: 'application/json'
+        }).done(function (data) {
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">${data.message}</div>`)
+            } else {
+                location.reload()
+            }
+        })
+    })
+
+    //LOVE
+    $(".content").on("click", ".content-main .reaction-comment .reaction .reaction-detail #loveIcon", function (event) {
+        event.preventDefault();
+        let postId = $(event.currentTarget).parents('.content-main').attr('key')
+        const postInfo = allPosts.find(post => post._id === postId)
+
+        if (!postInfo) {
+            $('.alert').remove()
+            $('.container-fluid').prepend('<div class="alert alert-warning" role="alert">Post Invalid</div>')
+            return
+        }
+        postInfo.reaction.love += 1
+
+        $.ajax({
+            url: `http://localhost:3000/posts/${postId}`,
+            data: JSON.stringify({
+                ...postInfo
+            }),
+            type: 'PUT',
+            contentType: 'application/json'
+        }).done(function (data) {
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">${data.message}</div>`)
+            } else {
+                location.reload()
+            }
+        })
+    })
+
+    //ANGRY
+    $(".content").on("click", ".content-main .reaction-comment .reaction .reaction-detail #angryIcon", function (event) {
+        event.preventDefault();
+        let postId = $(event.currentTarget).parents('.content-main').attr('key')
+        const postInfo = allPosts.find(post => post._id === postId)
+
+        if (!postInfo) {
+            $('.alert').remove()
+            $('.container-fluid').prepend('<div class="alert alert-warning" role="alert">Post Invalid</div>')
+            return
+        }
+        postInfo.reaction.angry += 1
+
+        $.ajax({
+            url: `http://localhost:3000/posts/${postId}`,
+            data: JSON.stringify({
+                ...postInfo
+            }),
+            type: 'PUT',
+            contentType: 'application/json'
+        }).done(function (data) {
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">${data.message}</div>`)
+            } else {
+                location.reload()
+            }
+        })
+    })
+    //SUPRISE
+    $(".content").on("click", ".content-main .reaction-comment .reaction .reaction-detail #surpriseIcon", function (event) {
+        event.preventDefault();
+        let postId = $(event.currentTarget).parents('.content-main').attr('key')
+        const postInfo = allPosts.find(post => post._id === postId)
+
+        if (!postInfo) {
+            $('.alert').remove()
+            $('.container-fluid').prepend('<div class="alert alert-warning" role="alert">Post Invalid</div>')
+            return
+        }
+        postInfo.reaction.suprise += 1
+
+        $.ajax({
+            url: `http://localhost:3000/posts/${postId}`,
+            data: JSON.stringify({
+                ...postInfo
+            }),
+            type: 'PUT',
+            contentType: 'application/json'
+        }).done(function (data) {
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">${data.message}</div>`)
+            } else {
+                location.reload()
+            }
+        })
+    })
+
+    //TẠO NHÓM
+    $(".btn-create").click(() => {
+        let name = $('#groupname').val()
+        let decription = $('#groupdecription').val()
+        let memberID = id
+        if (!name) {
+            $('.alert').remove()
+            $('#groupModal').prepend('<div class="alert alert-warning" role="alert">Vui lòng nhập tên nhóm  </div>')
+            return
+        }
+        $.ajax({
+            url: `http://localhost:3000/groups/`,
+            data: JSON.stringify({
+                name,
+                decription,
+                memberID
+            }),
+            type: 'POST',
+            contentType: 'application/json'
+        }).done(data => {
+            if (!data.isSuccess) {
+                $('.alert').remove()
+                $('.container-fluid').prepend(`<div class="alert alert-warning" role="alert">${data.message}</div>`)
+                return
+            }
+            else {
+                window.location.replace('http://127.0.0.1:5500/gapo%20app/client/componants/Homepage/index.html')
+            }
+        })
+
+    })
+
+    //SIGN OUT
     $('#signout-btn').click(() => {
-        localStorage.removeItem("email")
         localStorage.removeItem("id")
         window.location.replace('../LoginPage/index.html')
     })

@@ -65,8 +65,8 @@
                                     style="width:15%; border-radius: 50%;margin-right: 5px;"> Đặng Quốc Thanh
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="../LoginPage/index.html"><i class="fas fa-door-open"
-                                        style="margin-right: 5px;"></i>Thoát</a>
+                                <a class="dropdown-item" href="../LoginPage/index.html " id="signout-btn"><i
+                                        class="fas fa-door-open" style="margin-right: 5px;"></i>Thoát</a>
                             </div>
                         </li>
                     </ul>
@@ -74,7 +74,7 @@
             </nav>
         </header>
         <div class="row">
-            <div class="col-md-4 col-lg-3 p-0 bg-white">
+            <div class="col-md-3 col-lg-3 p-0 bg-white">
                 <nav class="navbar navbar-expand-md menu-left d-block align-content-between">
                     <div class="collapse navbar-collapse d-flex align-content-between flex-wrap" id="collapsibleNavbar">
                         <ul class="slider-b-rigt">
@@ -98,11 +98,41 @@
                                     <i class="far fa-flag"></i> Trang của bạn
                                 </a>
                             </li>
-                            <li class="item-add text-center">
+                            <li class="item-add text-center" data-toggle="modal" data-target="#groupModal"
+                                id="create-group">
                                 <a class="text-center" href="#">
-                                    <img src="../../assets/images/create-page.svg" alt=""> Tạo trang
+                                    <img src="../../assets/images/create-page.svg" alt=""> Tạo nhóm
                                 </a>
                             </li>
+                            <div class="modal" id="groupModal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header text-center">
+                                            <h4 class="modal-title">Tạo nhóm</h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <label for="">Tên nhóm</label>
+                                            <input class="form-control" name="" id="groupname">
+                                            <label for="">Lời giới thiệu</label>
+                                            <textarea class="form-control" name="" id="groupdecription" cols="15"
+                                                rows="10"></textarea>
+                                            <div class="form-group">
+                                                <label for="sell">Tên người tạo:</label>
+                                                <input type="text" class="form-control" id="sell" disabled>
+                                            </div>
+                                            <div class="text-center mt-5">
+                                                <button class="btn btn-success btn-create">Tạo</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
+                        <ul class="slider-b-rigt group">
                         </ul>
 
                         <div class="text-secondary text-center w-100">
@@ -116,18 +146,18 @@
                     </div>
                 </nav>
             </div>
-            <div class="col-md-4 col-lg-6 ">
+            <div class="col-md-7 col-sm-12 col-lg-6 ">
                 <div class="body-main">
                     <div class="container">
                         <div class="row">
                             <div class="col-12">
 
-                                <div class="status-main  bg-7c mb-3 mt-2 row d-flex align-items-cneter">
-                                    <div class="status col-2">
+                                <div class="status-main bg-7c mb-3 mt-2 row d-flex align-items-cneter">
+                                    <div class="status col-1 p-0">
                                         <img src="../../assets/images/default-user-avatar.png" alt=""
-                                            style="width:65%; border-radius: 50%;">
+                                            style="width:95%; border-radius: 50%;">
                                     </div>
-                                    <div class="status-inp col-10 form-group ">
+                                    <div class="status-inp col-11 form-group ">
                                         <input type="button" class="form-control post-btn" data-toggle="modal"
                                             data-target="#postModal" value="Hãy viết cảm nghĩ của bạn?">
                                     </div>
@@ -150,7 +180,7 @@
                                                         rows="10"></textarea>
                                                     <div class="form-group">
                                                         <label for="sel1">Tên người viết:</label>
-                                                        <input type="text" class="form-control" id="sel1">
+                                                        <input type="text" class="form-control" id="sel1" disabled>
                                                     </div>
                                                     <div class="text-center mt-5">
                                                         <button class="btn btn-success btn-post"><i
@@ -163,94 +193,7 @@
                                     </div>
                                 </div>
 
-                                <div class="content row">
-                                    <div class="content-main bg-7c mb-3 " key="">
-                                        <div class="author">
-                                            <div class="author-main pb-2">
-                                                <a href="#"><img src="../../assets/images/default-user-avatar.png"
-                                                        alt="" style="width: 30px;"></a>
-                                                <a href="#">
-                                                    <span class='aut-name'>Dang Quoc Thanh</span>
-                                                </a>
-                                            </div>
-                                            <div class="author-status">
-                                                <span>Đi Học Về</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="reaction-comment d-flex justify-content-between">
-                                            <div class="reaction">
-
-                                                <div class="mr-4 reaction-detail">
-                                                    <img class="mr-1 reaction-icon" id="likeIcon"
-                                                        src="../../assets/images/like.png" alt="icon">
-                                                    1
-                                                </div>
-                                                <div class="mr-4 reaction-detail">
-                                                    <img class="mr-1 reaction-icon" id="smileIcon"
-                                                        src="../../assets/images/smile.png" alt="icon">
-                                                    2
-                                                </div>
-                                                <div class="mr-4 reaction-detail">
-                                                    <img class="mr-1 reaction-icon" id="loveIcon"
-                                                        src="../../assets/images/heart.png" alt="icon">
-                                                    3
-                                                </div>
-                                                <div class="mr-4 reaction-detail">
-                                                    <img class="mr-1 reaction-icon" id="angryIcon"
-                                                        src="../../assets/images/angry.png" alt="icon">
-                                                    4
-                                                </div>
-                                                <div class="mr-4 reaction-detail">
-                                                    <img class="mr-1 reaction-icon" id="surpriseIcon"
-                                                        src="../../assets/images/suprise.png" alt="icon">
-                                                    5
-                                                </div>
-                                            </div>
-                                            <div class="comment d-flex">
-                                                <a class=" mr-2" href="#">2 bình luận</a>
-                                                <a class=" mr-2" href="#">86 lượt chia sẻ</a>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-around btn-top-ac">
-                                            <div class="btn-item"> <button data-toggle="collapse" data-target="#comment"
-                                                    class="btn btn-reaction postcomment" id=""> <i
-                                                        class="far fa-thumbs-up"></i> Thích</button>
-                                            </div>
-                                            <div class="btn-item"> <button data-toggle="collapse" data-target="#comment"
-                                                    class="btn btn-reaction postcomment" id=""> <i
-                                                        class="far fa-comments"></i> bình
-                                                    luận</button></div>
-                                            <div class="btn-item"> <button data-toggle="collapse" data-target="#share"
-                                                    class="btn btn-reaction"> <i class="far fa-share-square"></i> chia
-                                                    sẻ</button></div>
-                                        </div>
-                                        <div class="post-comment-main">
-                                            <div class="comment-main mt-3 mb-3">
-                                                <div class="comment-item mb-3">
-                                                    <div class="comment-author">
-                                                        <img src="../../assets/images/default-user-avatar.png"
-                                                            style="width:35px;border-radius: 50%; margin-right: 5px;">Phát
-                                                        Già
-                                                    </div>
-                                                    <p class="m-0" style="padding-left: 35px; padding-top:10px">Giề</p>
-                                                </div>
-                                            </div>
-                                            <div class=" row d-flex align-items-center post-comment-item">
-                                                <div class="col-1">
-                                                    <img src="../../assets/images/default-user-avatar.png"
-                                                        alt="author-commet" class="rounded-circle" style="width:35px;">
-                                                </div>
-                                                <div class="col-9 post-main">
-                                                    <input type="text" class="form-control gPgfXu comment-post">
-                                                </div>
-                                                <div class="col-2 p-0">
-                                                    <button class="btn btn-success btn-comment"><i
-                                                            class="far fa-paper-plane"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="content row" id="content">
                                 </div>
                             </div>
                         </div>
@@ -258,7 +201,7 @@
                 </div>
 
             </div>
-            <div class="col-md-4 col-lg-3 d-none d-md-block  bg-white">
+            <div class="col-md-2 col-lg-3 d-none d-md-block  bg-white">
                 <div class="menu-right">
                     <div class="menu-items">
                         <p>Tài Khoản: <span>0</span> <img src="../../assets/images/gcoin.svg" alt=""></p>
@@ -266,7 +209,7 @@
                     </div>
                     <div class="menu-items">
                         <p>Danh sách bạn bè</p>
-                        <div class="list-item text-center">
+                        <div class="list-item text-center" id="list-user">
                             <div class="item-img">
                                 <img src="../../assets/images/friends.png" alt="">
                             </div>

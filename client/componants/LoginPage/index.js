@@ -30,10 +30,12 @@ $(document).ready(function () {
             contentType: 'application/json'
         }).done(function (data) {
             if (data.status === 'success') {
+                console.log(data)
+                localStorage.setItem("id", data.id)
                 window.location.replace('http://127.0.0.1:5500/gapo%20app/client/componants/Homepage/index.html')
             } else {
                 $('.alert').remove();
-                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">${data.massage}</div>`)
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">${data.message}</div>`)
                 return
             }
         });

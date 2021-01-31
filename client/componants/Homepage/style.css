@@ -102,7 +102,14 @@ a:hover {
     padding-right: 10px;
     color: black;
 }
+.item-r li {
+    list-style-type: none;
+    text-decoration: none;
+}
+.item-r li a span{
+    list-style-type: none;
 
+}
 .item-top-menu-right i {
     font-size: 16px;
 }
@@ -166,6 +173,7 @@ a:hover {
     border-top: 1px solid #7c7c7c;
     border-bottom: 1px solid #7c7c7c;
     padding: 10px 0;
+    width: 100%;
 }
 
 .reaction img {
@@ -205,6 +213,8 @@ header {
 
 .status img {
     width: 100%;
+    margin-left: 5px;
+    margin-top: 3px;
 }
 
 .status-main {
@@ -248,8 +258,11 @@ header {
     background-color: rgb(226, 226, 226);
     padding: .5rem .625rem;
     border-radius: 1rem;
+    width: 100%;
 }
-
+.item-top-menu p{
+    font-size: 10px;
+}
 .item-top-menu-right .nav-link {
     padding: 0;
 }
@@ -311,4 +324,13 @@ header {
 .comment-author{
     font-size: 17px;
     color: blue;    
+}
+.group{
+    margin-left: 10px;
+}
+.group:last-child{
+    margin-bottom: 50px;
+}
+.item-r{
+    cursor: pointer;
 }
