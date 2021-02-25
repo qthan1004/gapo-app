@@ -11,8 +11,9 @@ mongoose.connect('mongodb://localhost:27017/gapo-app', (err) => {
 });
 
 const userRouters = require('./routes/users.routers')
-const loginRouters = require("./routes/login.routers")
+const loginRouters = require('./routes/login.routers')
 const postsRouters = require('./routes/posts.routers')
+const groupRouters = require('./routes/groups.routers')
 
 const app = express();
 const port = 3000;
@@ -20,6 +21,7 @@ const port = 3000;
 app.use(bodyParser.json())
 app.use(cors())
 
+app.use('/groups', groupRouters)
 app.use('/users', userRouters)
 app.use('/login', loginRouters)
 app.use('/posts', postsRouters)

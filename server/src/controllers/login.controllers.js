@@ -14,7 +14,6 @@ module.exports.checkUser = (req, res) => {
         result = result[0]
         if (result) {
             if (result.password === password && result.email === email) {
-
                 return res.json({
                     status: 'success',
                     id: result._id

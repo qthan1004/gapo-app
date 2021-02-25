@@ -334,3 +334,17 @@ header {
 .item-r{
     cursor: pointer;
 }
+.logogroup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    background-color: rgb(134, 134, 253);
+    width: 100%;
+    margin-bottom: 5px;
+}
+.logogroup span{
+    font-size: 2rem;
+    font-weight: 650;
+    color: white;
+}

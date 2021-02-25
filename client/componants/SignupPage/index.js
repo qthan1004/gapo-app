@@ -47,28 +47,28 @@ $(document).ready(function () {
         }
 
 
-        //CALL API
-        // $.ajax({
-        //     url: "http://localhost:3000/users",
-        //     data: JSON.stringify({
-        //         firstname,
-        //         lastname,
-        //         email,
-        //         password,
-        //         birthday,
-        //         gender
-        //     }),
-        //     type: 'POST',
-        //     contentType: 'application/json'
-        // }).done(function (data) {
-        //     if (data.status === "success") {
-        //         window.location.replace("http://127.0.0.1:5500/gapo%20app/client/componants/LoginPage/index.html")
-        //     } else {
-        //         $('.alert').remove();
-        //         $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">${data.message}</div>`)
-        //         return
-        //     }
-        // })
+        // CALL API
+        $.ajax({
+            url: "http://localhost:3000/users",
+            data: JSON.stringify({
+                firstname,
+                lastname,
+                email,
+                password,
+                birthday,
+                gender
+            }),
+            type: 'POST',
+            contentType: 'application/json'
+        }).done(function (data) {
+            if (data.status === "success") {
+                window.location.replace("http://127.0.0.1:5500/gapo%20app/client/componants/LoginPage/index.html")
+            } else {
+                $('.alert').remove();
+                $(".container-fluid").prepend(`<div class="alert alert-danger" role="alert">${data.message}</div>`)
+                return
+            }
+        })
 
     })
     $('#login-btn').click(() => {

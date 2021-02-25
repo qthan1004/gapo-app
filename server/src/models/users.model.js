@@ -12,8 +12,8 @@ const userSchema = new Schema(
         gender: String
     },
     {
-        collection: "Users"
+        collection: "users"
     });
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('user', userSchema)
 

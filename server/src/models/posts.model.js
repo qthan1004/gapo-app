@@ -8,14 +8,17 @@ const postSchema = new Schema(
         time: String,
         reaction: {
             like: Number,
-            haha: Number,
-            cry: Number,
-            love: Number
+            smile: Number,
+            angry: Number,
+            love: Number,
+            suprise: Number
         },
+        groupID: String,
         comment: [
             {
                 author: String,
-                content: String
+                content: String,
+                postID: String
             }
         ]
     },
